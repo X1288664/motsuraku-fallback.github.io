@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>トラブルシューティング</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Hiragino Sans', 'Noto Sans CJK JP', sans-serif;
+            background-color: #f4f6f9; color: #333; display: flex;
+            justify-content: center; align-items: center; min-height: 100vh;
+            margin: 0; text-align: center; padding: 20px 0;
+        }
+        .status-box {
+            background-color: #fff; padding: 40px 50px; border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 800px;
+        }
+        h1 { font-size: 1.5em; margin-top: 0; margin-bottom: 15px; }
+        p { color: #666; line-height: 1.7; }
+        .main-link {
+            display: inline-block; background-color: #28a745; color: #fff;
+            padding: 12px 24px; border-radius: 5px; text-decoration: none;
+            font-weight: bold; margin-top: 25px; transition: background-color 0.2s ease;
+        }
+        .main-link:hover { background-color: #218838; text-decoration: none; }
+        .troubleshooting-area {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: left; /* 左揃えにする */
+        }
+        .troubleshooting-area h3 {
+            font-size: 1.2em;
+            color: #dc3545; /* エラーコードは赤字に */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="status-box">
+        <h1>トラブルシューティング</h1>
+        <p>
+            エラーが発生する場合は以下のトラブルシューティングで対応し、<br>
+            解決しない場合は（メンションする相手や連絡方法）で伝えてください。
+        </p>
+
+        <div class="troubleshooting-area">
+            <h3>エラーコード: 403 Forbidden</h3>
+            <p>
+                <strong>内容:</strong> サーバーへのアクセスが拒否されました。<br>
+                <strong>対処法:</strong> 特定のネットワークからのアクセスが制限されている可能性があります。別のネットワーク（Wi-Fi、モバイルデータ通信など）から再度お試しください。
+            </p>
+            <hr>
+            <h3>エラーコード: 502 Bad Gateway</h3>
+            <p>
+                <strong>内容:</strong> サーバーが一時的に応答していません。<br>
+                <strong>対処法:</strong> サーバーが再起動中か、高負荷状態の可能性があります。5〜10分ほど時間をおいてから、再度アクセスをお試しください。
+            </p>
+            </div>
+        
+        <a href="http://zunda0924-motsuraku.f5.si/" class="main-link">接続ページに戻る</a>
+        </div>
+
+</body>
+</html>
