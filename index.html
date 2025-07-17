@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ステータス確認中...</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Hiragino Sans', 'Noto Sans CJK JP', sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .status-box {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 1.5em;
+            margin-top: 0;
+        }
+        p {
+            color: #666;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="status-box" id="statusBox">
+        <h1>サーバーの状態を確認しています...</h1>
+        <div class="loader"></div>
+        <p>問題がなければ、自動的にサイトへ移動します。</p>
+    </div>
+
+    <script>
+        // ▼▼▼ あなたのメインサイトのURLに書き換えてください ▼▼▼
+        const targetUrl = "http://zunda0924-motsuraku.f5.si/"; 
+
+        // ページが読み込まれたらすぐにステータスチェックを開始
+        (async function checkStatus() {
+            try {
+                // fetchを使ってサイトへのアクセスを試みる
+                // mode: 'no-cors' は、CORSエラーを回避するためのおまじない。
+                // これにより、成功か失敗(ネットワークエラー)かだけを判断できる。
+                await fetch(targetUrl, { mode: 'no-cors' });
+
+                // fetchが成功した場合 (サーバーから何らかの応答があった場合)
+                // 正常とみなし、メインサイトへリダイレクトする
+                console.log("サーバーは応答しました。リダイレクトします。");
+                window.location.href = targetUrl;
+
+            } catch (error) {
+                // fetchが失敗した場合 (ネットワークエラーなどでサーバーに到達できなかった場合)
+                // サーバーが停止中とみなし、ページにエラーメッセージを表示する
+                console.error("サーバーへのアクセスに失敗しました:", error);
+                const statusBox = document.getElementById('statusBox');
+                statusBox.innerHTML = `
+                    <h1>現在サーバーにアクセスできません</h1>
+                    <p>サイトが一時的に停止しているか、メンテナンス中の可能性があります。</p>
+                    <p>時間をおいてから再度お試しください。</p>
+                `;
+            }
+        })();
+    </script>
+
+</body>
+</html>
