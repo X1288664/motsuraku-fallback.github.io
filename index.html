@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ステータス確認中...</title>
+    <title>サーバーへの接続について</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Hiragino Sans', 'Noto Sans CJK JP', sans-serif;
@@ -18,68 +18,47 @@
         }
         .status-box {
             background-color: #fff;
-            padding: 40px;
+            padding: 40px 50px;
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         h1 {
             font-size: 1.5em;
             margin-top: 0;
+            margin-bottom: 15px;
         }
         p {
             color: #666;
+            line-height: 1.7;
         }
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
+        .main-link {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 25px;
+            transition: background-color 0.2s ease;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .main-link:hover {
+            background-color: #0056b3;
+            text-decoration: none;
         }
     </style>
 </head>
 <body>
 
     <div class="status-box" id="statusBox">
-        <h1>サーバーの状態を確認しています...</h1>
-        <div class="loader"></div>
-        <p>問題がなければ、自動的にサイトへ移動します。</p>
+        <h1>サイトへの接続について</h1>
+        <p>
+            現在、メインサイトにアクセスしにくい状況か、<br>
+            メンテナンス中の可能性があります。
+        </p>
+        <p>以下のボタンからサイトへのアクセスをお試しください。</p>
+        <a href="http://zunda0924-motsuraku.f5.si/" class="main-link">メインサイトへ移動</a>
     </div>
 
-    <script>
-        // ▼▼▼ リダイレクト先のメインサイトURL ▼▼▼
-        const targetUrl = "http://zunda0924-motsuraku.f5.si/";
-
-        (function checkStatus() {
-            const statusBox = document.getElementById('statusBox');
-            const img = new Image();
-
-            // 画像が正常に読み込めた時の処理
-            img.onload = function() {
-                console.log("サーバーは応答しました。リダイレクトします。");
-                window.location.href = targetUrl;
-            };
-
-            // 画像の読み込みに失敗した時の処理
-            img.onerror = function() {
-                console.error("サーバーへのアクセスに失敗、または画像が見つかりません。");
-                statusBox.innerHTML = `
-                    <h1>現在サーバーにアクセスできません</h1>
-                    <p>サイトが一時的に停止しているか、メンテナンス中の可能性があります。</p>
-                    <p>時間をおいてから再度お試しください。</p>
-                `;
-            };
-            
-            // サーバー上の小さな画像(faviconなど)の読み込みを開始
-            img.src = targetUrl.replace(/\/$/, "/image/redirect-check.jpeg") + "/image/redirect-check.jpeg" + Date.now();
-        })();
-    </script>
-
-</body>
+    </body>
 </html>
