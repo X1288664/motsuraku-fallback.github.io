@@ -3,44 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>公式サイトへのご案内</title>
+    <title>ステータスページ</title>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Hiragino Sans', 'Noto Sans CJK JP', sans-serif;
-            background-color: #f4f6f9; color: #333; display: flex;
-            justify-content: center; align-items: center; height: 100vh;
-            margin: 0; text-align: center;
-        }
-        .status-box {
-            background-color: #fff; padding: 40px 50px; border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        h1 { font-size: 1.5em; margin-top: 0; margin-bottom: 15px; }
-        p { color: #666; line-height: 1.7; }
-        .main-link {
-            display: inline-block; background-color: #007bff; color: #fff;
-            padding: 12px 24px; border-radius: 5px; text-decoration: none;
-            font-weight: bold; margin-top: 25px; transition: background-color 0.2s ease;
-        }
-        .main-link:hover { background-color: #0056b3; text-decoration: none; }
-        .sub-link {
-            display: block;
-            margin-top: 30px;
-            font-size: 0.9em;
-            color: #555;
-        }
+        body { font-family: sans-serif; text-align: center; padding-top: 50px; }
+        .status { font-size: 1.2em; }
+        .redirecting { color: #007BFF; }
+        .error { color: #DC3545; }
+        .manual-link { margin-top: 20px; }
     </style>
 </head>
 <body>
 
-    <div class="status-box">
-        <h1>こちらは公式サイトへ移動する案内ページです。</h1>
-        <p>下の項目をクリック、またはタップしてアクセスしてください。</p>
-        
-        <a href="http://zunda0924-motsuraku.f5.si/" class="main-link">公式サイトへ移動する</a>
+    <h1>サイトの状況を確認しています...</h1>
+    <div id="status-message" class="status"></div>
+    <div class="manual-link">
+        <p>自動で移動しない場合は、以下のリンクをクリックしてください。</p>
+        <a href="https://zunda0924-motsuraku.f5.si">メインサイトへ</a>
+    </div>
 
-        <a href="troubleshooting.html" class="sub-link">エラーが表示されアクセスできない場合</a>
-        </div>
+    <script>
+        // --- 設定項目 ---
+        const targetUrl = 'https://zunda0924-motsuraku.f5.si'; // あなたのウェブサイトのURL
+        // ----------------
+
+        const statusMessage = document.getElementById('status-message');
+
+        // タイムアウトを5秒に設定
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+        // fetchを使ってサイトの状況を確認
+        fetch(targetUrl, {
+            method: 'HEAD', // HEADリクエストはヘッダーのみ取得するため軽量
+            mode: 'no-cors', // CORSエラーを回避
+            signal: controller.signal // タイムアウト設定
+        })
+        .then(response => {
+            // サーバーから何らかの応答があれば、サイトは起動していると判断
+            console.log('サイトはオンラインです。リダイレクトします。');
+            statusMessage.textContent = 'サイトに接続できました。自動的に移動します...';
+            statusMessage.classList.add('redirecting');
+            window.location.href = targetUrl; // 対象のウェブページにリダイレクト
+        })
+        .catch(error => {
+            // サーバーから応答がない、またはネットワークエラーの場合
+            console.error('サイトに接続できませんでした:', error);
+            statusMessage.textContent = '現在、サイトにアクセスできません。サーバーが停止しているか、メンテナンス中の可能性があります。';
+            statusMessage.classList.add('error');
+        });
+
+    </script>
 
 </body>
 </html>
