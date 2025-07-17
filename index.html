@@ -54,37 +54,32 @@
 
     <script>
         // ▼▼▼ あなたのメインサイトのURLに書き換えてください ▼▼▼
-        const targetUrl = "http://zunda0924-motsuraku.f5.si/"; // テスト用にGoogleのままにしています
+        const targetUrl = "http://zunda0924-motsuraku.f5.si/"; 
 
         // ページが読み込まれたらすぐにステータスチェックを開始
-        (function checkStatus() {
-            const statusBox = document.getElementById('statusBox');
+        (async function checkStatus() {
+            try {
+                // fetchを使ってサイトへのアクセスを試みる
+                // mode: 'no-cors' は、CORSエラーを回避するためのおまじない。
+                // これにより、成功か失敗(ネットワークエラー)かだけを判断できる。
+                await fetch(targetUrl, { mode: 'no-cors' });
 
-            // --- 新しいチェック方法 ---
-            // 1. 新しい画像オブジェクトを作成
-            const img = new Image();
-
-            // 2. 画像が正常に読み込めた時の処理
-            img.onload = function() {
-                // サーバーは応答していると判断し、リダイレクトする
+                // fetchが成功した場合 (サーバーから何らかの応答があった場合)
+                // 正常とみなし、メインサイトへリダイレクトする
                 console.log("サーバーは応答しました。リダイレクトします。");
                 window.location.href = targetUrl;
-            };
 
-            // 3. 画像の読み込みに失敗した時の処理
-            img.onerror = function() {
-                // サーバーが停止中、または画像がない場合
-                console.error("サーバーへのアクセスに失敗、または画像が見つかりません。");
+            } catch (error) {
+                // fetchが失敗した場合 (ネットワークエラーなどでサーバーに到達できなかった場合)
+                // サーバーが停止中とみなし、ページにエラーメッセージを表示する
+                console.error("サーバーへのアクセスに失敗しました:", error);
+                const statusBox = document.getElementById('statusBox');
                 statusBox.innerHTML = `
                     <h1>現在サーバーにアクセスできません</h1>
                     <p>サイトが一時的に停止しているか、メンテナンス中の可能性があります。</p>
                     <p>時間をおいてから再度お試しください。</p>
                 `;
-            };
-            
-            // 4. サーバー上の小さな画像(faviconなど)の読み込みを開始
-            // ※URLの末尾に乱数を加えることで、ブラウザのキャッシュを回避しています
-            img.src = targetUrl.replace(/\/$/, "") + '/image/headerlogo.jpg' + Date.now();
+            }
         })();
     </script>
 
